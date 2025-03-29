@@ -24,6 +24,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   equatable: ^2.0.7
   get_it: ^8.0.3
+  flutter_svg: ^2.0.17
 
 
 
@@ -44,6 +45,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/svgs/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
