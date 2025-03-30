@@ -29,4 +29,15 @@ class QRScanCubit extends Cubit<QRScanState> {
       emit(QRScanError("Failed to load QR data"));
     }
   }
+
+  Future<void> deleteQRItem(int index) async {
+    try {
+      emit(QRScanLoading());
+      await qrRepository.deleteQRData(index);
+      final data = qrRepository.getAllQRData();
+      emit(QRScanLoaded(data));
+    } catch (e) {
+      emit(QRScanError("Failed to delete QR data"));
+    }
+  }
 }

@@ -55,7 +55,11 @@ class LoginBody extends StatelessWidget {
           bloc: loginCubit,
           listener: (context, state) {
             if (state is LoginSuccess) {
-              Navigator.pushReplacementNamed(context, AppRouter.scanScreen);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRouter.scanScreen,
+                (route) => false,
+              );
             } else if (state is LoginFailure) {
               ScaffoldMessenger.of(
                 context,

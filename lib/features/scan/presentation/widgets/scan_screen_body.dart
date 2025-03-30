@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qr_reader/core/routes/app_router.dart';
+import 'package:qr_reader/core/services/dependency_injection.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/custom_btn.dart';
+import 'package:qr_reader/features/scan/logic/img_picker_cubit/image_picker_cubit.dart';
+import 'package:qr_reader/features/scan/presentation/widgets/pick_image.dart';
 
 class ScanScreenBody extends StatelessWidget {
   const ScanScreenBody({super.key});
@@ -29,7 +33,12 @@ class ScanScreenBody extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, AppRouter.qrResult),
+                  onTap:
+                      () => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRouter.qrResult,
+                        (route) => false,
+                      ),
                   child: SvgPicture.asset(
                     "assets/svgs/scan-screen-top-icon.svg",
                   ),
@@ -56,7 +65,10 @@ class ScanScreenBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset("assets/svgs/scan-screen-1.svg"),
+                  BlocProvider(
+                    create: (context) => sl<ImagePickerCubit>(),
+                    child: PickImageWidget(),
+                  ),
                   SizedBox(width: 20.h),
                   SvgPicture.asset("assets/svgs/scan-screen-2.svg"),
                   SizedBox(width: 20.h),
@@ -68,7 +80,11 @@ class ScanScreenBody extends StatelessWidget {
                 color: AppColors.mainColor,
                 text: "Place Camera Code",
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRouter.qrScanner);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRouter.qrScanner,
+                    (route) => false,
+                  );
                 },
               ),
             ],

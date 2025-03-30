@@ -23,7 +23,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    qrBox = Hive.box<QRDataModel>('qr_codes'); // استرجاع صندوق البيانات
+    qrBox = Hive.box<QRDataModel>('qr_codes');
   }
 
   @override
@@ -50,8 +50,11 @@ class _ResultScreenState extends State<ResultScreen> {
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap:
-                        () =>
-                            Navigator.pushNamed(context, AppRouter.scanScreen),
+                        () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRouter.scanScreen,
+                          (route) => false,
+                        ),
                     child: SvgPicture.asset("assets/svgs/result-top-icon.svg"),
                   ),
                 ),
@@ -87,6 +90,7 @@ class _ResultScreenState extends State<ResultScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return DataModel(
                             data: qrCodes[index].content.toString(),
+                            index: index,
                           );
                         },
                       );

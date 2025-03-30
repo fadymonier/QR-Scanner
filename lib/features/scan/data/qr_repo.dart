@@ -10,24 +10,20 @@ class QRRepository {
     if (!exists) {
       final qrData = QRDataModel(content: content, scannedAt: DateTime.now());
       await box.add(qrData);
-      print("✅ تم حفظ QR: $content");
-    } else {
-      print("⚠️ الكود موجود بالفعل: $content");
-    }
+    } else {}
   }
 
   List<QRDataModel> getAllQRData() {
     final box = Hive.box<QRDataModel>(_boxName);
     final data = box.values.toList();
-    print("📌 البيانات المسترجعة من Hive:");
     for (var item in data) {
       print("🔹 ${item.content} - ${item.scannedAt}");
     }
     return data;
   }
 
-  Future<void> clearAllData() async {
+  Future<void> deleteQRData(int index) async {
     final box = Hive.box<QRDataModel>(_boxName);
-    await box.clear();
+    await box.deleteAt(index);
   }
 }

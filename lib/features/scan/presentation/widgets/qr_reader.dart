@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
@@ -16,7 +19,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   late final MobileScannerController controller;
   String? scannedData;
   bool _isDisposed = false;
-  bool _isScanning = true; // ✅ منع المسح المتكرر
+  bool _isScanning = true;
 
   @override
   void initState() {
@@ -66,6 +69,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.mainColor,
         title: Text("Scan QR Code", style: AppTextStyles.inter24Black600),
       ),
       body: Center(
@@ -73,8 +77,8 @@ class _QRScanScreenState extends State<QRScanScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 250,
-              height: 250,
+              width: 300.w,
+              height: 300.h,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.mainColor, width: 2),
                 borderRadius: BorderRadius.circular(10),
@@ -84,15 +88,11 @@ class _QRScanScreenState extends State<QRScanScreen> {
                       ? MobileScanner(
                         controller: controller,
                         onDetect: (BarcodeCapture capture) {
-                          print(
-                            "QR Code Detected!",
-                          ); // تأكيد إن `onDetect` بيشتغل
+                          print("QR Code Detected!");
                           if (capture.barcodes.isNotEmpty) {
                             final barcode = capture.barcodes.first;
                             if (barcode.rawValue != null) {
-                              print(
-                                "QR Data: ${barcode.rawValue}",
-                              ); // طباعة البيانات المستخرجة
+                              print("QR Data: ${barcode.rawValue}");
                               _handleQRScan(barcode.rawValue!);
                             }
                           }
