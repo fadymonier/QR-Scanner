@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/features/auth/login/presentation/widgets/login_body.dart';
 import 'package:qr_reader/features/auth/login/logic/cubit/firebase_login_cubit.dart';
-import 'package:qr_reader/core/services/dependency_injection.dart';
+import 'package:qr_reader/core/services/service_locator.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

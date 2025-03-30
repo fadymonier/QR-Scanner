@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_reader/core/routes/app_router.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/app_textfield.dart';
@@ -54,7 +55,11 @@ class LoginBody extends StatelessWidget {
           bloc: loginCubit,
           listener: (context, state) {
             if (state is LoginSuccess) {
-              Navigator.pushReplacementNamed(context, '/ScanScreen');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRouter.scanScreen,
+                (route) => false,
+              );
             } else if (state is LoginFailure) {
               ScaffoldMessenger.of(
                 context,
@@ -63,7 +68,6 @@ class LoginBody extends StatelessWidget {
           },
           builder: (context, state) {
             return SizedBox(
-              width: double.infinity,
               child: AppCustomBtn(
                 color:
                     state is LoginLoading ? Colors.grey : AppColors.mainColor,
