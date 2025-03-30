@@ -6,7 +6,6 @@ import 'package:qr_reader/core/routes/app_router.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/custom_appbar.dart';
-import 'package:qr_reader/core/widgets/custom_btn.dart';
 import 'package:qr_reader/features/result/data/data_model.dart';
 import 'package:qr_reader/features/scan/data/qr_data_model.dart';
 
@@ -58,7 +57,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     child: SvgPicture.asset("assets/svgs/result-top-icon.svg"),
                   ),
                 ),
-                SizedBox(height: 50.h),
+                SizedBox(height: 40.h),
                 Text("Scanning Result", style: AppTextStyles.inter16Black700),
                 SizedBox(height: 30.h),
                 Text(
@@ -66,8 +65,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   "Proreader will Keep your last 10 days history\nto keep your all scared history please\npurched our pro package",
                   style: AppTextStyles.inter12LightGrey500,
                 ),
-                SizedBox(height: 60.h),
-
+                SizedBox(height: 50.h),
                 Expanded(
                   child: ValueListenableBuilder(
                     valueListenable: qrBox.listenable(),
@@ -97,12 +95,12 @@ class _ResultScreenState extends State<ResultScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 20.h),
-                AppCustomBtn(
-                  color: AppColors.mainColor,
-                  text: "Send",
-                  onPressed: () {},
-                ),
+                // SizedBox(height: 20.h),
+                // AppCustomBtn(
+                //   color: AppColors.mainColor,
+                //   text: "Send",
+                //   onPressed: () {},
+                // ),
               ],
             ),
           ),

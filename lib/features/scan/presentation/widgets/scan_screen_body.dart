@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qr_reader/core/routes/app_router.dart';
-import 'package:qr_reader/core/services/dependency_injection.dart';
+import 'package:qr_reader/core/services/service_locator.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/custom_btn.dart';
@@ -80,11 +80,7 @@ class ScanScreenBody extends StatelessWidget {
                 color: AppColors.mainColor,
                 text: "Place Camera Code",
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRouter.qrScanner,
-                    (route) => false,
-                  );
+                  Navigator.pushNamed(context, AppRouter.qrScanner);
                 },
               ),
             ],

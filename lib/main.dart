@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_reader/core/cache/cache_helper.dart';
 import 'package:qr_reader/core/cache/cache_keys.dart';
 import 'package:qr_reader/core/routes/app_router.dart';
-import 'package:qr_reader/core/services/dependency_injection.dart';
+import 'package:qr_reader/core/services/service_locator.dart';
 import 'package:qr_reader/features/scan/data/qr_data_model.dart';
 import 'package:qr_reader/firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';

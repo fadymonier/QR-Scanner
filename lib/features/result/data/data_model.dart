@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qr_reader/core/services/dependency_injection.dart';
+import 'package:qr_reader/core/services/service_locator.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/features/scan/logic/qr_cubit/qr_scan_cubit.dart';
@@ -16,6 +16,28 @@ class DataModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      startActionPane: ActionPane(
+        motion: const BehindMotion(),
+        extentRatio: 0.3,
+        children: [
+          SlidableAction(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(11.r),
+              bottomLeft: Radius.circular(11.r),
+            ),
+            backgroundColor: AppColors.darkGreyColor,
+            foregroundColor: AppColors.whiteColor,
+            icon: Icons.copy_rounded,
+            label: 'Copy',
+            onPressed: (BuildContext context) {
+              Clipboard.setData(ClipboardData(text: data));
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Copied to clipboard')));
+            },
+          ),
+        ],
+      ),
       endActionPane: ActionPane(
         motion: const BehindMotion(),
         extentRatio: 0.3,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qr_reader/core/services/dependency_injection.dart';
+import 'package:qr_reader/core/services/service_locator.dart';
 import 'package:qr_reader/features/auth/login/presentation/screen/login_screen.dart';
 import 'package:qr_reader/features/result/presentation/screen/result_screen.dart';
 import 'package:qr_reader/features/scan/logic/qr_cubit/qr_scan_cubit.dart';
@@ -9,7 +9,7 @@ import 'package:qr_reader/features/scan/presentation/widgets/qr_reader.dart';
 
 class AppRouter {
   // Route names
-  static const String login = "/Login";
+  static const String login = "/";
   static const String forgetPassword = "/ForgetPassword";
   static const String scanScreen = "/ScanScreen";
   static const String qrScanner = "/QrScanner";
