@@ -57,24 +57,25 @@ class ScanScreenBody extends StatelessWidget {
               SizedBox(height: 20.h),
               Text(
                 textAlign: TextAlign.center,
-                "Tap the Button to scan\nor Import QR Code from gallery",
+                "Tap the Button to scan\nor Import QR Code from Gallery",
                 style: AppTextStyles.inter12LightGrey500,
               ),
               SizedBox(height: 45.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BlocProvider(
-                    create: (context) => sl<ImagePickerCubit>(),
-                    child: PickImageWidget(),
-                  ),
-                  SizedBox(width: 20.h),
-                  SvgPicture.asset("assets/svgs/scan-screen-2.svg"),
-                  SizedBox(width: 20.h),
-                  SvgPicture.asset("assets/svgs/scan-screen-3.svg"),
-                ],
+              BlocProvider(
+                create: (context) => sl<ImagePickerCubit>(),
+                child: PickImageWidget(),
               ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+
+              //     SizedBox(width: 20.h),
+              //     SvgPicture.asset("assets/svgs/scan-screen-2.svg"),
+              //     SizedBox(width: 20.h),
+              //     SvgPicture.asset("assets/svgs/scan-screen-3.svg"),
+              //   ],
+              // ),
               SizedBox(height: 45.h),
               AppCustomBtn(
                 color: AppColors.mainColor,

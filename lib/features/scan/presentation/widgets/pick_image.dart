@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qr_reader/features/scan/logic/img_picker_cubit/image_picker_cubit.dart';
 
@@ -30,7 +31,7 @@ class PickImageWidget extends StatelessWidget {
         onTap: () {
           context.read<ImagePickerCubit>().pickImageAndScanQR();
         },
-        child: SvgPicture.asset("assets/svgs/scan-screen-1.svg"),
+        child: SvgPicture.asset("assets/svgs/scan-screen-1.svg", height: 40.h),
       ),
     );
   }
