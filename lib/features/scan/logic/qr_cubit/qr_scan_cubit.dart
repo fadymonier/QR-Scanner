@@ -13,7 +13,7 @@ class QRScanCubit extends Cubit<QRScanState> {
       emit(QRScanLoading());
       await qrRepository.saveQRData(content);
 
-      final data = await qrRepository.getAllQRData();
+      final data = qrRepository.getAllQRData();
       emit(QRScanLoaded(data));
     } catch (e) {
       emit(QRScanError("Failed to save QR data"));
@@ -23,7 +23,7 @@ class QRScanCubit extends Cubit<QRScanState> {
   Future<void> loadQRData() async {
     try {
       emit(QRScanLoading());
-      final data = await qrRepository.getAllQRData();
+      final data = qrRepository.getAllQRData();
       emit(QRScanLoaded(data));
     } catch (e) {
       emit(QRScanError("Failed to load QR data"));

@@ -13,28 +13,53 @@ class QRScanScreen extends StatefulWidget {
 }
 
 class _QRScanScreenState extends State<QRScanScreen> {
-  final MobileScannerController controller = MobileScannerController();
+  late final MobileScannerController controller;
   String? scannedData;
-  bool isQRFixed = false;
+  bool _isDisposed = false;
+  bool _isScanning = true; // ✅ منع المسح المتكرر
 
-  void _fixQRCode(String data) {
-    setState(() {
-      scannedData = data;
-      isQRFixed = true;
-    });
+  @override
+  void initState() {
+    super.initState();
+    controller = MobileScannerController(
+      detectionSpeed: DetectionSpeed.normal,
+      facing: CameraFacing.back,
+      torchEnabled: false,
+    );
   }
 
-  void _extractData() {
-    if (isQRFixed && scannedData != null) {
-      print("Extracting QR Data: $scannedData"); // ✅ طباعة البيانات قبل التخزين
-      context.read<QRScanCubit>().scanQRCode(scannedData!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("QR Data Saved Successfully!")),
-      );
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
+  @override
+  void dispose() {
+    _isDisposed = true;
+    _safeDisposeCamera();
+    super.dispose();
+  }
+
+  Future<void> _safeDisposeCamera() async {
+    try {
+      await controller.stop();
+    } catch (e) {
+      debugPrint('Error stopping camera: $e');
+    } finally {
+      controller.dispose();
     }
+  }
+
+  Future<void> _handleQRScan(String data) async {
+    if (_isDisposed || !_isScanning) return;
+
+    setState(() {
+      scannedData = data;
+      _isScanning = false;
+    });
+
+    await _safeDisposeCamera();
+
+    context.read<QRScanCubit>().scanQRCode(data);
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) Navigator.pop(context, data);
+    });
   }
 
   @override
@@ -55,41 +80,53 @@ class _QRScanScreenState extends State<QRScanScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child:
-                  isQRFixed
-                      ? const Center(
-                        child: Text(
-                          "QR Fixed",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                      : MobileScanner(
+                  _isScanning
+                      ? MobileScanner(
                         controller: controller,
                         onDetect: (BarcodeCapture capture) {
+                          print(
+                            "QR Code Detected!",
+                          ); // تأكيد إن `onDetect` بيشتغل
                           if (capture.barcodes.isNotEmpty) {
                             final barcode = capture.barcodes.first;
-                            if (barcode.rawValue != null && !isQRFixed) {
-                              _fixQRCode(barcode.rawValue!);
+                            if (barcode.rawValue != null) {
+                              print(
+                                "QR Data: ${barcode.rawValue}",
+                              ); // طباعة البيانات المستخرجة
+                              _handleQRScan(barcode.rawValue!);
                             }
                           }
                         },
-                      ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed:
-                  isQRFixed ? null : () => setState(() => isQRFixed = true),
-              child: const Text("Fix QR Code"),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: isQRFixed ? _extractData : null,
-              child: const Text("Extract QR Data"),
+                      )
+                      : _buildSuccessWidget(),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSuccessWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.check_circle, color: Colors.green, size: 50),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              scannedData!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            "QR Code scanned successfully!",
+            style: TextStyle(color: Colors.green),
+          ),
+        ],
       ),
     );
   }

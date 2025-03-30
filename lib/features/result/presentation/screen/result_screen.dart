@@ -8,6 +8,7 @@ import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/custom_appbar.dart';
 import 'package:qr_reader/core/widgets/custom_btn.dart';
 import 'package:qr_reader/features/result/data/data_model.dart';
+import 'package:qr_reader/features/scan/data/qr_data_model.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
@@ -17,12 +18,12 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  late Box<String> qrBox;
+  late Box<QRDataModel> qrBox;
 
   @override
   void initState() {
     super.initState();
-    qrBox = Hive.box<String>('qr_codes'); // استرجاع صندوق البيانات
+    qrBox = Hive.box<QRDataModel>('qr_codes'); // استرجاع صندوق البيانات
   }
 
   @override
@@ -64,11 +65,10 @@ class _ResultScreenState extends State<ResultScreen> {
                 ),
                 SizedBox(height: 60.h),
 
-                // استرجاع البيانات من Hive وعرضها
                 Expanded(
                   child: ValueListenableBuilder(
                     valueListenable: qrBox.listenable(),
-                    builder: (context, Box<String> box, _) {
+                    builder: (context, Box<QRDataModel> box, _) {
                       final qrCodes = box.values.toList();
 
                       if (qrCodes.isEmpty) {
@@ -85,7 +85,9 @@ class _ResultScreenState extends State<ResultScreen> {
                             (context, index) => SizedBox(height: 14.h),
                         itemCount: qrCodes.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return DataModel(data: qrCodes[index]);
+                          return DataModel(
+                            data: qrCodes[index].content.toString(),
+                          );
                         },
                       );
                     },

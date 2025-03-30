@@ -23,7 +23,15 @@ class DataModel extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20.0.r),
             child: SvgPicture.asset("assets/svgs/data-model-icon.svg"),
           ),
-          Text(data, style: AppTextStyles.inter14Black400),
+          Expanded(
+            child: Text(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              data,
+              style: AppTextStyles.inter14Black400,
+            ),
+          ),
+          SizedBox(width: 10.w),
         ],
       ),
     );
