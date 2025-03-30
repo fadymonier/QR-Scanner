@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qr_reader/core/routes/app_router.dart';
 import 'package:qr_reader/core/utils/app_colors.dart';
 import 'package:qr_reader/core/utils/app_text_styles.dart';
 import 'package:qr_reader/core/widgets/custom_btn.dart';
@@ -27,10 +28,15 @@ class ScanScreenBody extends StatelessWidget {
               SvgPicture.asset("assets/svgs/divider.svg"),
               Align(
                 alignment: Alignment.topRight,
-                child: SvgPicture.asset("assets/svgs/scan-screen-top-icon.svg"),
+                child: InkWell(
+                  onTap: () => Navigator.pushNamed(context, AppRouter.qrResult),
+                  child: SvgPicture.asset(
+                    "assets/svgs/scan-screen-top-icon.svg",
+                  ),
+                ),
               ),
               SizedBox(height: 50.h),
-              Text("Scan OR code", style: AppTextStyles.inter16Black700),
+              Text("Scan QR code", style: AppTextStyles.inter16Black700),
               SizedBox(height: 30.h),
               Text(
                 textAlign: TextAlign.center,
@@ -61,7 +67,9 @@ class ScanScreenBody extends StatelessWidget {
               AppCustomBtn(
                 color: AppColors.mainColor,
                 text: "Place Camera Code",
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRouter.qrScanner);
+                },
               ),
             ],
           ),

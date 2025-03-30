@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,19 @@ import 'package:qr_reader/core/cache/cache_keys.dart';
 import 'package:qr_reader/core/routes/app_router.dart';
 import 'package:qr_reader/core/services/dependency_injection.dart';
 import 'package:qr_reader/firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+List<CameraDescription> cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   setupLocator();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  cameras = await availableCameras();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Hive.initFlutter();
+  await Hive.openBox<String>('qr_codes');
   final String userUid = await SharedPrefHelper.getSecuredString(
     SharedPrefKeys.userUid,
   );
